@@ -1,6 +1,6 @@
 module github.com/antoniszymanski/loadpackage-go
 
-go 1.24.4
+go 1.24.6
 
 require golang.org/x/tools v0.37.0
 

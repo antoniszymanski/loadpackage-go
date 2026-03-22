@@ -5,6 +5,7 @@ package loadpackage
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 
 	"golang.org/x/tools/go/packages"
@@ -29,7 +30,7 @@ func Load(pattern string, cfg *packages.Config) (*packages.Package, error) {
 		return nil, err
 	}
 	if len(pkgs) != 1 {
-		return nil, errors.New("expected exactly one package")
+		return nil, fmt.Errorf("expected exactly one package, got %d", len(pkgs))
 	}
 	if err = Validate(pkgs[0]); err != nil {
 		return nil, err

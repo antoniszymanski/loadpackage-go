@@ -1,8 +1,8 @@
-name: Create release notes
+name: release-notes
 
 on:
-  push:
-    tags: ["v*"]
+  release:
+    types: [created]
 
 permissions:
   contents: write
@@ -10,7 +10,6 @@ permissions:
 jobs:
   initial-release:
     if: github.ref == 'refs/tags/v0.1.0'
-    name: Initial release notes
     runs-on: ubuntu-latest
     steps:
       - name: Update an initial release
@@ -19,19 +18,18 @@ jobs:
           body: |
             Initial release
 
-            **Full changelog**: https://github.com/${{github.repository}}/commits/v0.1.0
+            **Full changelog**: https://github.com/${{ github.repository }}/commits/v0.1.0
 
   regular-release:
     if: github.ref != 'refs/tags/v0.1.0'
-    name: Regular release notes
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Generate changelog
-        uses: mikepenz/release-changelog-builder-action@v6
         id: changelog
+        uses: mikepenz/release-changelog-builder-action@v6
         with:
           mode: COMMIT
           configuration: .github/changelog-config.json
@@ -39,4 +37,4 @@ jobs:
       - name: Update release
         uses: softprops/action-gh-release@v2
         with:
-          body: ${{steps.changelog.outputs.changelog}}
+          body: ${{ steps.changelog.outputs.changelog }}
